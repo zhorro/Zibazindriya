@@ -8,6 +8,11 @@ folder_02.source = opml
 folder_02.target = .
 DEPLOYMENTFOLDERS += folder_02
 
+# Add more folders to ship with the application, here
+folder_03.source = Images
+folder_03.target = .
+DEPLOYMENTFOLDERS += folder_03
+
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
 
@@ -37,7 +42,8 @@ QT       += core gui xml sql network
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    RSS/rssbaseitem.cpp
+    RSS/rssbaseitem.cpp \
+    RSS/folderviewer.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -50,4 +56,5 @@ OTHER_FILES += \
     Ziba.sln
 
 HEADERS += \ 
-    RSS/rssbaseitem.h
+    RSS/rssbaseitem.h \
+    RSS/folderviewer.h

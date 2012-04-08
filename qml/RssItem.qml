@@ -5,6 +5,7 @@ Item {
     id: rssItem
     property int newItems: 0
     property int dowItems: 0
+    property string description: qsTr("Unnamed podcast")
 
     width: 360
     height: 32
@@ -34,7 +35,7 @@ Item {
 
     Text {
         id: descLabel
-        text: qsTr("Unnamed podcast")
+        text: parent.description
         verticalAlignment: Text.AlignVCenter
 
         anchors{

@@ -3,7 +3,9 @@
 #include <QList>
 #include "qmlapplicationviewer.h"
 
-#include "RSS/rssbaseitem.h"
+//#include "RSS/rssbaseitem.h"
+
+#include "RSS/folderviewer.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -13,15 +15,20 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("QML/Zibazindriya.qml"));
 
-    QList<QObject*> rssModel;
-    rssModel.append(new rssBaseItem());
-    rssModel.append(new rssBaseItem());
-    rssModel.append(new rssBaseItem());
+//     QList<QObject*> rssModel;
+//     rssModel.append(new rssBaseItem());
+//     rssModel.append(new rssBaseItem());
+//     rssModel.append(new rssBaseItem());
+// 
+//     QDeclarativeContext *ctxt = viewer.rootContext();
+//     ctxt->setContextProperty("feedsModel", QVariant::fromValue(rssModel));
 
-    QDeclarativeContext *ctxt = viewer.rootContext();
-    ctxt->setContextProperty("feedsModel", QVariant::fromValue(rssModel));
+	FolderViewer foldModel;
+	QDeclarativeContext *ctxt = viewer.rootContext();
+	ctxt->setContextProperty("feedsModel", &foldModel);
 
-    viewer.showExpanded();
+	
+	viewer.showExpanded();
 
     return app->exec();
 }

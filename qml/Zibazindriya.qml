@@ -4,12 +4,14 @@ import QtQuick 1.1
 Rectangle {
     width: 360
     height: 360
-    Column {
-        Repeater {
-            model: feedsModel
-            RssItem {
-                width: parent.width;
-            }
+
+    ListView {
+        anchors.fill: parent
+        model: feedsModel
+        delegate: RssItem {
+            width: parent.width;
+            newItems: updatedItems;
+            dowItems: dowloadedItems;
         }
     }
 }
