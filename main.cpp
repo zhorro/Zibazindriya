@@ -14,6 +14,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 	podcastsDB pdb(&viewer);
 
 	FolderViewer foldModel;
+	foldModel.setQuery(QSqlQuery("SELECT * FROM podcasts"));
+
 	QDeclarativeContext *ctxt = viewer.rootContext();
 	ctxt->setContextProperty("feedsModel", &foldModel);
 

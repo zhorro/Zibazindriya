@@ -39,7 +39,7 @@ public:
         if (localName == "outline" && idx>0)
         {
             QUrl url (atts.value(idx));
-            qDebug() << "Нашли описание, url = " << url.toString();
+            qDebug() << "Found url, url = " << url.toString();
             // Проверить есть ли в базе с таким урлом подкаст
             if (m_pdb->exists(url)) // Уже такой есть
                 return true; // Ловить нечего

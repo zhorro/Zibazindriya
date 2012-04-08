@@ -12,6 +12,7 @@ Rectangle {
             width: parent.width;
             newItems: updatedItems;
             dowItems: dowloadedItems;
+            description: descr;
         }
     }
 }

@@ -1,34 +1,33 @@
-﻿#include "folderviewer.h"
+﻿#include <QDebug>
+#include <QUrl>
+#include "folderviewer.h"
 
 FolderViewer::FolderViewer(QObject *parent) :
-    QAbstractListModel(parent)
-		
+    QSqlQueryModel(parent)
 {	
     QHash<int, QByteArray> roles;
     roles[StatusRole] = "status";
     roles[DownlRole] = "dowloadedItems";
     roles[NewRole] = "updatedItems";
-    roles[DescRole] = "description";
+    roles[DescRole] = "descr";
     setRoleNames(roles);
 }
 
-void FolderViewer::setQuery( QSqlQuery query )
+void FolderViewer::updateData()
 {
-	this->query = query;
-	//TODO: Выполнить запрос и в соответствии с ним и обновить всю табличку
-}
-
-int FolderViewer::rowCount( const QModelIndex & parent )  const
-{
-	return 10;
+	//
 }
 
 QVariant FolderViewer::data ( const QModelIndex & index, int role )  const
 {
 	switch ( role )
 	{
-	case DownlRole :
-		return QVariant(index.row());
+	case DescRole :
+		{
+			QString desc = QSqlQueryModel::data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
+			QUrl    url  = QSqlQueryModel::data(index.sibling(index.row(), 2), Qt::DisplayRole).toString();
+			return 	desc.isEmpty() ? url : desc;
+		}
 		break;
 	case NewRole :
 		return QVariant(rowCount()-index.row());

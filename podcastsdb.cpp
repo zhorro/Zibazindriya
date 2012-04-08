@@ -83,10 +83,9 @@ podcastsDB::~podcastsDB()
 
 bool podcastsDB::exists (QUrl url)
 {
-	QSqlQuery query(dbase);
-	query.prepare("SELECT * FROM podcasts WHERE "
-		"rss_url = :url;");
-	query.bindValue(":url", url.toString());
+	QSqlQuery query("SELECT * FROM podcasts WHERE "
+		"podcast = ?");
+	query.addBindValue(url);
 	query.exec();
 
 	if (query.next())
@@ -96,11 +95,13 @@ bool podcastsDB::exists (QUrl url)
 
 void podcastsDB::append (QUrl url)
 {
-	QSqlQuery query (dbase);
-	query.prepare("INSERT INTO podcasts (rss_url)"
-		"VALUES(:url)");
-	query.bindValue(":url", url.toString());
+	qDebug() << "Appending source = " << url.toString();
+	QSqlQuery query("INSERT INTO podcasts (podcast) "
+		"VALUES (?)");
+	query.addBindValue(url);
 	if (!query.exec())
-		qDebug() << "error appending. SQL:" << query.executedQuery();
+		qDebug() << "error appending. SQL:" << query.executedQuery() << "error"<< query.lastError();
+
+	emit gotNewSources();
 }
 
