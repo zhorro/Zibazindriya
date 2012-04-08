@@ -1,4 +1,5 @@
-﻿#include "rssbaseitem.h"
+﻿#include <stdlib.h>
+#include "rssbaseitem.h"
 
 rssBaseItem::rssBaseItem(QObject *parent) :
     QObject(parent)
