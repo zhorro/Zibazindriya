@@ -43,7 +43,11 @@ SOURCES += main.cpp \
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 
-OTHER_FILES += 
+OTHER_FILES += \ 
+    Zibazindriya.qmlproject \
+    Ziba.vcxproj.filters \
+    Ziba.vcxproj \
+    Ziba.sln
 
 HEADERS += \ 
     RSS/rssbaseitem.h
