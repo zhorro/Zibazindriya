@@ -2,86 +2,107 @@
 import QtQuick 1.1
 
 Item {
-        id: rssItem
-        property int newItems;
-        property int dowItems;
+    id: rssItem
+    property int newItems: 0
+    property int dowItems: 0
 
-        Image {
-            id: itemImage
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: itemsAmounts.right
+    width: 360
+    height: 32
 
-            anchors.topMargin: 0
-            anchors.bottomMargin: 0
-            anchors.leftMargin: 16
+    Image {
+        id: itemImage
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            left: itemsAmounts.right
 
-            width: height
-            source: "../Images/RSS.png"
+            topMargin: 0
+            bottomMargin: 0
+            leftMargin: 16
+        }
+
+        width: height
+        source: "../Images/RSS.png"
+    }
+
+    function positiveIntToString(a){
+        var result = "";
+        if (a>0)
+            result = a;
+        return result;
+    }
+
+    Text {
+        id: descLabel
+        text: qsTr("Unnamed podcast")
+        verticalAlignment: Text.AlignVCenter
+
+        anchors{
+            bottom: parent.bottom
+            top: parent.top
+            right: parent.right
+            left: itemImage.right
+
+            bottomMargin: 0
+            topMargin: 0
+            rightMargin: 0
+            leftMargin: 16
+        }
+    }
+
+    Rectangle {
+        id: itemsAmounts
+        width: height
+        radius: 0
+        visible: true
+
+        anchors {
+            left: parent.left
+            bottom: parent.bottom
+            top: parent.top
+
+            leftMargin: 0
+            bottomMargin: 0
+            topMargin: 0
         }
 
         Text {
-            id: descLabel
-            text: qsTr("Unnamed podcast")
+            id: newItemsLabel
+            text: positiveIntToString(parent.parent.newItems)
+
+            anchors{
+                right: parent.right
+                left: parent.left
+                top: parent.top
+
+                rightMargin: 0
+                leftMargin: 0
+                topMargin: 0
+            }
+            horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
 
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.left: itemImage.right
-
-            anchors.bottomMargin: 0
-            anchors.topMargin: 0
-            anchors.rightMargin: 0
-            anchors.leftMargin: 16
+            height: width/2;
         }
 
-        Rectangle {
-            id: itemsAmounts
-            width: height
-            radius: 0
-            visible: true
+        Text {
+            id: dowItemsLabel
+            text: positiveIntToString(parent.parent.dowItems)
 
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
+            anchors {
+                right: parent.right
+                left: parent.left
+                bottom: parent.bottom
 
-            anchors.leftMargin: 0
-            anchors.bottomMargin: 0
-            anchors.topMargin: 0
-
-            Text {
-                id: newItemsLabel
-
-                anchors.right: parent.right
-                anchors.left: parent.left
-                anchors.top: parent.top
-
-                anchors.rightMargin: 0
-                anchors.leftMargin: 0
-                anchors.topMargin: 0
-
-                horizontalAlignment: Text.AlignRight
-                verticalAlignment: Text.AlignVCenter
-
-                height: width/2;
+                rightMargin: 0
+                leftMargin: 0
+                bottomMargin: 0
             }
 
-            Text {
-                id: dowItemsLabel
+            horizontalAlignment: Text.AlignRight
+            verticalAlignment: Text.AlignVCenter
 
-                anchors.right: parent.right
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
-
-                anchors.rightMargin: 0
-                anchors.leftMargin: 0
-                anchors.bottomMargin: 0
-
-                horizontalAlignment: Text.AlignRight
-                verticalAlignment: Text.AlignVCenter
-
-                height: width/2;
-            }
+            height: width/2;
         }
+    }
 }
