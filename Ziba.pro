@@ -43,7 +43,9 @@ QT       += core gui xml sql network
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
     RSS/rssbaseitem.cpp \
-    RSS/folderviewer.cpp
+    RSS/folderviewer.cpp \
+    podcastsdb.cpp \
+    opmlimport.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -57,4 +59,6 @@ OTHER_FILES += \
 
 HEADERS += \ 
     RSS/rssbaseitem.h \
-    RSS/folderviewer.h
+    RSS/folderviewer.h \
+    podcastsdb.h \
+    opmlimport.h
