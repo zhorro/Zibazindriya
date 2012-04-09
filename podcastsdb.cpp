@@ -71,7 +71,7 @@ podcastsDB::podcastsDB(QObject *parent) :
         qDebug () << "TABLE podcasts not created: " << queryOfCreatingSources.lastError ();
 
     //if (recreated)
-        OPMLImport("opml\\defaultFeeds.opml", this);
+        OPMLImport("opml/defaultFeeds.opml", this);
 }
 
 podcastsDB::~podcastsDB()

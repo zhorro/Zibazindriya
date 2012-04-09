@@ -21,7 +21,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
 	
 	viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-	viewer.setMainQmlFile(QLatin1String("QML/Zibazindriya.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/Zibazindriya.qml"));
 	viewer.showExpanded();
 
     return app->exec();
