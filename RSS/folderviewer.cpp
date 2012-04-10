@@ -6,32 +6,29 @@ FolderViewer::FolderViewer(QObject *parent) :
     QSqlQueryModel(parent)
 {	
     QHash<int, QByteArray> roles;
-    roles[StatusRole] = "status";
-    roles[DownlRole] = "dowloadedItems";
-    roles[NewRole] = "updatedItems";
-    roles[DescRole] = "descr";
+    roles[rl_status     ] = "status";
+    roles[rl_downloaded ] = "mdl_downloaded";
+    roles[rl_newEpisodes] = "mdl_newEpisodes";
+    roles[rl_description] = "mdl_description";
+    roles[rl_url        ] = "mdl_url";
     setRoleNames(roles);
 }
 
 void FolderViewer::updateData()
 {
-	//
+    //
 }
 
 QVariant FolderViewer::data ( const QModelIndex & index, int role )  const
 {
-	switch ( role )
-	{
-	case DescRole :
-		{
-			QString desc = QSqlQueryModel::data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
-			QUrl    url  = QSqlQueryModel::data(index.sibling(index.row(), 2), Qt::DisplayRole).toString();
-			return 	desc.isEmpty() ? url : desc;
-		}
-		break;
-	case NewRole :
-		return QVariant(rowCount()-index.row());
-		break;
-	}
-	return QVariant(QString("Unimplemented yet!"));
+    switch ( role )
+    {
+    case rl_description :
+        return QSqlQueryModel::data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
+    case rl_url :
+        return QSqlQueryModel::data(index.sibling(index.row(), 2), Qt::DisplayRole).toString();
+    case rl_newEpisodes :
+        return QVariant(rowCount()-index.row());
+    }
+    return QVariant(QString("Unimplemented yet!"));
 }

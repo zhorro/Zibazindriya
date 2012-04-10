@@ -10,9 +10,10 @@ Rectangle {
         model: feedsModel
         delegate: RssItem {
             width: parent.width;
-            newItems: updatedItems;
-            dowItems: dowloadedItems;
-            description: descr;
+            newEpisodes: mdl_newEpisodes;
+            downloaded: mdl_downloaded;
+            description: mdl_description;
+            url: mdl_url;
         }
     }
 }

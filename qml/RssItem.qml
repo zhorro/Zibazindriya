@@ -3,9 +3,10 @@ import QtQuick 1.1
 
 Item {
     id: rssItem
-    property int newItems: 0
-    property int dowItems: 0
-    property string description: qsTr("Unnamed podcast")
+    property int newEpisodes: 0
+    property int downloaded: 0
+    property string description: ""
+    property string url: ""
 
     width: 360
     height: 32
@@ -33,9 +34,16 @@ Item {
         return result;
     }
 
+    function ifFirstEmptySecond(a,b) {
+        if (a == "")
+            return b;
+        return a;
+    }
+
+
     Text {
         id: descLabel
-        text: parent.description
+        text: ifFirstEmptySecond(parent.description, parent.url)
         verticalAlignment: Text.AlignVCenter
 
         anchors{
@@ -69,7 +77,7 @@ Item {
 
         Text {
             id: newItemsLabel
-            text: positiveIntToString(parent.parent.newItems)
+            text: positiveIntToString(parent.parent.newEpisodes)
 
             anchors{
                 right: parent.right
@@ -88,7 +96,7 @@ Item {
 
         Text {
             id: dowItemsLabel
-            text: positiveIntToString(parent.parent.dowItems)
+            text: positiveIntToString(parent.parent.downloaded)
 
             anchors {
                 right: parent.right

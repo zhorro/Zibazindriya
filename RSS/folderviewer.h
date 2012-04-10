@@ -8,10 +8,11 @@ class FolderViewer : public QSqlQueryModel
     Q_OBJECT
 public:
     enum FolderRoles {
-        StatusRole = Qt::UserRole + 1,
-        DownlRole,
-        NewRole,
-        DescRole,
+        rl_status = Qt::UserRole + 1,
+        rl_downloaded,
+        rl_newEpisodes,
+        rl_description,
+        rl_url,
     };
 
     explicit FolderViewer(QObject *parent = 0);
