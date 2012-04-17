@@ -43,19 +43,10 @@
     <ClCompile Include="qmlapplicationviewer\qmlapplicationviewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RSS\rssbaseitem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_qmlapplicationviewer.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_qmlapplicationviewer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_rssbaseitem.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_rssbaseitem.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="RSS\folderviewer.cpp">
@@ -82,9 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qmlapplicationviewer\qmlapplicationviewer.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="RSS\rssbaseitem.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="RSS\folderviewer.h">

@@ -1,83 +1,90 @@
 ﻿#include <QtSql>
 
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+
 #include "podcastsdb.h"
 #include "opmlimport.h"
 
 podcastsDB::podcastsDB(QObject *parent) :
-    QObject(parent)
+QObject(parent)
 {
 	static int instance = 0;
 	Q_ASSERT(instance++==0);
 	bool recreated = false;
 
+	manager = new QNetworkAccessManager(this);
+
 	dbase = QSqlDatabase::addDatabase("QSQLITE");
-    dbase.setDatabaseName(ziba_dbaseName);
+	dbase.setDatabaseName(ziba_dbaseName);
 
-    if (!dbase.open()) {
-        qDebug() << "ААаааа!!   Где моя базочка!!!";
-        throw QString ("Не открывается база");
-    }
+	if (!dbase.open()) {
+		qDebug() << "ААаааа!!   Где моя базочка!!!";
+		throw QString ("Не открывается база");
+	}
 
-    QSqlQuery queryOfCreatingPeredachki(dbase);
-    if (queryOfCreatingPeredachki.exec (
-                "CREATE TABLE episode ("
-                "id                 INTEGER     PRIMARY KEY,"
-                "local              TEXT,"
-				"url                TEXT,"
+	QSqlQuery queryOfCreatingPeredachki(dbase);
+	if (queryOfCreatingPeredachki.exec (
+		"CREATE TABLE episode ("
+		"id                 INTEGER     PRIMARY KEY,"
+		"local              TEXT,"
+		"url                TEXT,"
+		"podcast            INTEGER,"
 
-                "new                BOOLEAN,"
-                "downloaded         BOOLEAN,"
-				"stillInFeed        BOOLEAN,"
-				
-				"timeUpdated		TIME,"
-				"timeDownloaded		TIME,"
-                "created            TIME,"
-				"deleteAfter        TIME,"
+		"new                BOOLEAN,"
+		"downloaded         BOOLEAN,"
+		"stillInFeed        BOOLEAN,"
 
-                "duration           DOUBLE,"
-                "lastPlayedPosition DOUBLE,"
+		"timeUpdated		TIME,"
+		"timeDownloaded		TIME,"
+		"created            TIME,"
+		"deleteAfter        TIME,"
 
-				"title              TEXT,"
-				"GUID               TEXT,"
-                "description        TEXT,"
-                "shownotes          TEXT,"
-                "src                TEXT,"
-                "link               TEXT,"
+		"duration           DOUBLE,"
+		"lastPlayedPosition DOUBLE,"
 
-				"updating           BOOLEAN"
-                ")"))
-    {
-        recreated = true;
-        qDebug () << "TABLE episode successfully created";
-    }
-    else
-        qDebug () << "TABLE episode not created: " << queryOfCreatingPeredachki.lastError ();
+		"title              TEXT,"
+		"GUID               TEXT,"
+		"description        TEXT,"
+		"shownotes          TEXT,"
+		"src                TEXT,"
+		"link               TEXT,"
 
-    QSqlQuery queryOfCreatingSources(dbase);
-    if (queryOfCreatingSources.exec (
-                "CREATE TABLE podcasts ("
-                "id                 INTEGER     PRIMARY KEY,"
-                "title              TEXT,"
-                "podcast            TEXT,"
-                "icon               TEXT,"
-				"tag				TEXT,"
-                "deleteInDays       INTEGER"
-                ")"))
-    {
-        recreated = true;
-        qDebug () << "TABLE podcasts successfuly created";
-    }
-    else
-        qDebug () << "TABLE podcasts not created: " << queryOfCreatingSources.lastError ();
+		"updating           BOOLEAN"
+		")"))
+	{
+		recreated = true;
+		qDebug () << "TABLE episode successfully created";
+	}
+	else
+		qDebug () << "TABLE episode not created: " << queryOfCreatingPeredachki.lastError ();
 
-    //if (recreated)
-        OPMLImport("opml/defaultFeeds.opml", this);
+	QSqlQuery queryOfCreatingSources(dbase);
+	if (queryOfCreatingSources.exec (
+		"CREATE TABLE podcasts ("
+		"id                 INTEGER     PRIMARY KEY,"
+		"title              TEXT,"
+		"podcast            TEXT,"
+		"icon               TEXT,"
+		"tag				TEXT,"
+		"deleteInDays       INTEGER"
+		")"))
+	{
+		recreated = true;
+		qDebug () << "TABLE podcasts successfuly created";
+	}
+	else
+		qDebug () << "TABLE podcasts not created: " << queryOfCreatingSources.lastError ();
+
+	//if (recreated)
+	OPMLImport("opml/defaultFeeds.opml", this);
 }
 
 podcastsDB::~podcastsDB()
 {
-    dbase.close();
-    QSqlDatabase::removeDatabase(ziba_dbaseName);
+	dbase.close();
+	QSqlDatabase::removeDatabase(ziba_dbaseName);
 }
 
 
@@ -105,3 +112,76 @@ void podcastsDB::append (QUrl url)
 	emit gotNewSources();
 }
 
+void podcastsDB::scan (QUrl url) // Сканирует QUrl на предмет новых записей
+{
+	get(url, getModes::gmScanForNewPodcasts);
+}
+
+void podcastsDB::post( QUrl url, getModes mode )
+{
+	getsQueue << qMakePair (url, mode);
+	emit scanQueue();
+}
+
+void podcastsDB::scanQueue ()
+{
+	cleanRelays();
+	if (replys.count() < 10)
+	{
+		auto q = getsQueue.dequeue();
+		get(q.first, q.second);
+	}
+}
+
+void podcastsDB::cleanRelays()
+{
+	int i = 0;
+	while (i < replys.count())
+	{
+		QNetworkReply * r = qobject_cast <QNetworkReply *> (replys[i]);
+		if (r)
+		{
+			i++;
+			continue;
+		}
+		replys.removeAt(i);
+	}
+}
+
+		
+
+void podcastsDB::get( QUrl url, getModes mode )
+{
+	QNetworkRequest req(url);
+	QNetworkReply *reply = manager->get(req);
+	switch (mode)
+	{
+		case getModes::gmScanForNewPodcasts : 
+			connect(reply, SIGNAL(finished()), this, SLOT(replyFinishedScan()));
+			break;
+		case getModes::gmDownloadIcon:
+		case getModes::gmDownloadAudio:
+		case getModes::gmDownloadShownotes:
+		default :
+		qDebug () << "Unimplemented get mode";
+	}
+	replys << reply;
+}
+
+void podcastsDB::replyFinishedScan ( QNetworkReply * reply )
+{
+	if (reply) 
+	{
+		if (reply->error() == QNetworkReply::NoError) 
+		{
+			//read data from reply
+		} 
+		else 
+		{	
+			//get http status code
+			int httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+			//do some error management
+		}
+		reply->deleteLater();
+	}
+}

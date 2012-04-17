@@ -75,6 +75,13 @@ Item {
             topMargin: 0
         }
 
+        Image {
+            id: stateImage
+            visible: false
+            source: "qrc:/qtquickplugin/images/template_image.png"
+            anchors.fill: parent
+        }
+
         Text {
             id: newItemsLabel
             text: positiveIntToString(parent.parent.newEpisodes)
@@ -114,4 +121,43 @@ Item {
             height: width/2;
         }
     }
+
+    states: [
+        State {
+            name: "awaiting"
+            PropertyChanges {
+                target: stateImage
+                visible: false
+            }
+
+            PropertyChanges {
+                target: newItemsLabel
+                visible: true
+            }
+            PropertyChanges {
+                target: dowItemsLabel
+                visible: true
+            }
+        },
+        State {
+            name: "playing"
+        },
+        State {
+            name: "updating"
+
+            PropertyChanges {
+                target: stateImage
+                source: "../Images/loading/loading4.gif"
+            }
+
+            PropertyChanges {
+                target: newItemsLabel
+                visible: false
+            }
+            PropertyChanges {
+                target: dowItemsLabel
+                visible: false
+            }
+        }
+    ]
 }

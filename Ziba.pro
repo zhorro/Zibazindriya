@@ -58,7 +58,6 @@ OTHER_FILES += \
     Ziba.sln
 
 HEADERS += \ 
-    RSS/rssbaseitem.h \
     RSS/folderviewer.h \
     podcastsdb.h \
     opmlimport.h
