@@ -78,7 +78,6 @@ Item {
         Image {
             id: stateImage
             visible: false
-            source: "qrc:/qtquickplugin/images/template_image.png"
             anchors.fill: parent
         }
 

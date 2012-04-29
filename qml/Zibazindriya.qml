@@ -6,6 +6,7 @@ Rectangle {
     height: 360
 
     ListView {
+        cacheBuffer: 32
         anchors.fill: parent
         model: feedsModel
         delegate: RssItem {
