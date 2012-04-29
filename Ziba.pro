@@ -45,7 +45,9 @@ SOURCES += main.cpp \
     RSS/rssbaseitem.cpp \
     RSS/folderviewer.cpp \
     podcastsdb.cpp \
-    opmlimport.cpp
+    opmlimport.cpp \
+    RSS/rssParser.cpp \
+    RSS/episode.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -60,4 +62,6 @@ OTHER_FILES += \
 HEADERS += \ 
     RSS/folderviewer.h \
     podcastsdb.h \
-    opmlimport.h
+    opmlimport.h \
+    RSS/rssParser.h \
+    RSS/episode.h

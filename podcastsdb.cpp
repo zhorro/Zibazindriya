@@ -6,6 +6,8 @@
 
 #include "podcastsdb.h"
 #include "opmlimport.h"
+#include "RSS/episode.h"
+#include "RSS/rssParser.h"
 
 podcastsDB::podcastsDB(QObject *parent) :
 QObject(parent)
@@ -25,34 +27,7 @@ QObject(parent)
 	}
 
 	QSqlQuery queryOfCreatingPeredachki(dbase);
-	if (queryOfCreatingPeredachki.exec (
-		"CREATE TABLE episode ("
-		"id                 INTEGER     PRIMARY KEY,"
-		"local              TEXT,"
-		"url                TEXT,"
-		"podcast            INTEGER,"
-
-		"new                BOOLEAN,"
-		"downloaded         BOOLEAN,"
-		"stillInFeed        BOOLEAN,"
-
-		"timeUpdated		TIME,"
-		"timeDownloaded		TIME,"
-		"created            TIME,"
-		"deleteAfter        TIME,"
-
-		"duration           DOUBLE,"
-		"lastPlayedPosition DOUBLE,"
-
-		"title              TEXT,"
-		"GUID               TEXT,"
-		"description        TEXT,"
-		"shownotes          TEXT,"
-		"src                TEXT,"
-		"link               TEXT,"
-
-		"updating           BOOLEAN"
-		")"))
+	if (queryOfCreatingPeredachki.exec ( Episode::dbCreationString()))
 	{
 		recreated = true;
 		qDebug () << "TABLE episode successfully created";
@@ -79,6 +54,7 @@ QObject(parent)
 
 	//if (recreated)
 	OPMLImport("opml/defaultFeeds.opml", this);
+	scanAll();
 }
 
 podcastsDB::~podcastsDB()
@@ -88,7 +64,7 @@ podcastsDB::~podcastsDB()
 }
 
 
-bool podcastsDB::exists (QUrl url)
+int podcastsDB::exists (QUrl url)
 {
 	QSqlQuery query("SELECT * FROM podcasts WHERE "
 		"podcast = ?");
@@ -96,8 +72,8 @@ bool podcastsDB::exists (QUrl url)
 	query.exec();
 
 	if (query.next())
-		return true;
-	return false;
+		return query.value(query.record().indexOf("id")).toInt();
+	return 0;
 }
 
 void podcastsDB::append (QUrl url)
@@ -112,8 +88,17 @@ void podcastsDB::append (QUrl url)
 	emit gotNewSources();
 }
 
+void podcastsDB::scanAll()
+{
+	QSqlQuery query("SELECT * FROM podcasts"); // Выбрать все подкасты
+	const int fieldNo = query.record().indexOf("podcast");
+	while (query.next())
+		scan(query.value(fieldNo).toUrl());
+}
+
 void podcastsDB::scan (QUrl url) // Сканирует QUrl на предмет новых записей
 {
+	qDebug() << "appending to scan queue url: " << url.toString();
 	get(url, getModes::gmScanForNewPodcasts);
 }
 
@@ -152,29 +137,33 @@ void podcastsDB::cleanRelays()
 
 void podcastsDB::get( QUrl url, getModes mode )
 {
-	QNetworkRequest req(url);
-	QNetworkReply *reply = manager->get(req);
+	QNetworkReply *reply = manager->get(QNetworkRequest(url));
 	switch (mode)
 	{
-		case getModes::gmScanForNewPodcasts : 
-			connect(reply, SIGNAL(finished()), this, SLOT(replyFinishedScan()));
+		case gmScanForNewPodcasts : 
+			connect(reply, SIGNAL(finished( )), this, SLOT(replyFinishedScan( )));
 			break;
-		case getModes::gmDownloadIcon:
-		case getModes::gmDownloadAudio:
-		case getModes::gmDownloadShownotes:
+		case gmDownloadIcon:
+		case gmDownloadAudio:
+		case gmDownloadShownotes:
 		default :
 		qDebug () << "Unimplemented get mode";
 	}
 	replys << reply;
 }
 
-void podcastsDB::replyFinishedScan ( QNetworkReply * reply )
+void podcastsDB::replyFinishedScan ( )
 {
+	QNetworkReply * reply = qobject_cast<QNetworkReply*>(this->sender());
 	if (reply) 
 	{
 		if (reply->error() == QNetworkReply::NoError) 
 		{
-			//read data from reply
+			int podcastId = exists(reply->url());
+
+			rssParser rss(podcastId, reply->readAll(), this);
+			qDebug() << connect (&rss, SIGNAL(gotNewEpisode(int, Episode)), this, SLOT(gotNewEpisode (int, Episode)), Qt::DirectConnection);
+			rss.go();
 		} 
 		else 
 		{	
@@ -185,3 +174,13 @@ void podcastsDB::replyFinishedScan ( QNetworkReply * reply )
 		reply->deleteLater();
 	}
 }
+
+void podcastsDB::gotNewEpisode (int podcast, Episode item)
+{
+	// 1. Проверить наличие эпизода в базе
+	//	2. Добавить эпизод в базу
+	//	3. Обновить какиенито егоные характеристики
+	// QSqlQuery query ("INSERT INTO podcasts (podcast) "
+	//	"VALUES (?)");
+}
+

@@ -54,7 +54,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtDeclarative;$(QTDIR)\include;.\qmlapplicationviewer;$(QTDIR)\include\ActiveQt;.\debug;$(QTDIR)\mkspecs\default;.\GeneratedFiles;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtDeclarative;$(QTDIR)\include;.\qmlapplicationviewer;$(QTDIR)\include\ActiveQt;.\debug;$(QTDIR)\mkspecs\default;.\GeneratedFiles;.\RSS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -94,7 +94,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtDeclarative;$(QTDIR)\include;.\qmlapplicationviewer;$(QTDIR)\include\ActiveQt;.\release;$(QTDIR)\mkspecs\default;.\GeneratedFiles;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtDeclarative;$(QTDIR)\include;.\qmlapplicationviewer;$(QTDIR)\include\ActiveQt;.\release;$(QTDIR)\mkspecs\default;.\GeneratedFiles;.\RSS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -134,6 +134,9 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Debug\moc_episode.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Debug\moc_folderviewer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -143,10 +146,16 @@
     <ClCompile Include="Debug\moc_qmlapplicationviewer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Debug\moc_rssParser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opmlimport.cpp" />
     <ClCompile Include="podcastsdb.cpp" />
     <ClCompile Include="qmlapplicationviewer\qmlapplicationviewer.cpp" />
+    <ClCompile Include="Release\moc_episode.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Release\moc_folderviewer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -156,16 +165,21 @@
     <ClCompile Include="Release\moc_qmlapplicationviewer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Release\moc_rssParser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="RSS\episode.cpp" />
     <ClCompile Include="RSS\folderviewer.cpp" />
+    <ClCompile Include="RSS\rssParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qmlapplicationviewer\qmlapplicationviewer.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\debug" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\debug" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing qmlapplicationviewer.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\release" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\release" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing qmlapplicationviewer.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp;%(Outputs)</Outputs>
     </CustomBuild>
@@ -175,11 +189,11 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing folderviewer.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\debug" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I." "-I." "-I."</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\debug" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing folderviewer.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\release" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I." "-I." "-I."</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\release" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -187,15 +201,35 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing podcastsdb.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\debug" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I." "-I." "-I."</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\debug" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing podcastsdb.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\release" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I." "-I." "-I."</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\release" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opmlimport.h" />
+    <CustomBuild Include="RSS\episode.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing episode.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\debug" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing episode.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\release" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I."</Command>
+    </CustomBuild>
+    <CustomBuild Include="RSS\rssParser.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing rssParser.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\debug" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing rssParser.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"   -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_DECLARATIVE_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  "-I." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtDeclarative" "-I$(QTDIR)\include" "-I.\qmlapplicationviewer" "-I$(QTDIR)\include\ActiveQt" "-I.\release" "-I$(QTDIR)\mkspecs\default" "-I.\GeneratedFiles" "-I.\RSS" "-I." "-I." "-I." "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"</Command>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
