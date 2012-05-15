@@ -99,7 +99,7 @@ void podcastsDB::scanAll()
 void podcastsDB::scan (QUrl url) // Сканирует QUrl на предмет новых записей
 {
 	qDebug() << "appending to scan queue url: " << url.toString();
-	get(url, getModes::gmScanForNewPodcasts);
+    get(url, gmScanForNewPodcasts);
 }
 
 void podcastsDB::post( QUrl url, getModes mode )
@@ -113,7 +113,7 @@ void podcastsDB::scanQueue ()
 	cleanRelays();
 	if (replys.count() < 10)
 	{
-		auto q = getsQueue.dequeue();
+        QPair<QUrl, getModes> q = getsQueue.dequeue();
 		get(q.first, q.second);
 	}
 }

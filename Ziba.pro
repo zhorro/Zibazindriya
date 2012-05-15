@@ -42,7 +42,6 @@ QT       += core gui xml sql network
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    RSS/rssbaseitem.cpp \
     RSS/folderviewer.cpp \
     podcastsdb.cpp \
     opmlimport.cpp \
