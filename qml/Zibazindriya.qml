@@ -1,20 +1,34 @@
 ﻿// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
+import com.nokia.meego 1.1      // MeeGo components
 import QtQuick 1.1
 
-Rectangle {
-    width: 360
-    height: 360
+PageStackWindow {
+    id: appWindow
+    showToolBar: true
+    showStatusBar: true
+    anchors.margins: 0
+    initialPage: testPageWithLists
 
-    ListView {
-        cacheBuffer: 32
-        anchors.fill: parent
-        model: feedsModel
-        delegate: RssItem {
-            width: parent.width;
-            newEpisodes: mdl_newEpisodes;
-            downloaded: mdl_downloaded;
-            description: mdl_description;
-            url: mdl_url;
+    TestPageWithLists {
+        id: testPageWithLists
+    }
+
+    ToolBarLayout {
+        id: commonTools
+        visible: true
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            anchors.right: (parent === undefined) ? undefined : parent.right
+            onClicked: (myMenu.status === DialogStatus.Closed) ? myMenu.open() : myMenu.close()
+        }
+    }
+
+    Menu {
+        id: myMenu
+        visualParent: pageStack
+        MenuLayout {
+            MenuItem { text: qsTr("Sample menu item") }
         }
     }
 }
+

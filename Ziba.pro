@@ -56,7 +56,8 @@ OTHER_FILES += \
     Zibazindriya.qmlproject \
     Ziba.vcxproj.filters \
     Ziba.vcxproj \
-    Ziba.sln
+    Ziba.sln \
+    qml/TestPageWithLists.qml
 
 HEADERS += \ 
     RSS/folderviewer.h \

@@ -113,7 +113,7 @@ void podcastsDB::scanQueue ()
 	cleanRelays();
 	if (replys.count() < 10)
 	{
-		auto q = getsQueue.dequeue();
+        QPair<QUrl, getModes> q = getsQueue.dequeue();
 		get(q.first, q.second);
 	}
 }
