@@ -14,13 +14,14 @@ const QString ziba_dbaseName = "zibaDB.sqlite";
 class  podcastsDB : public QObject
 {
     Q_OBJECT
-	enum getModes {
+public:
+    enum getModes {
 		gmScanForNewPodcasts,
 		gmDownloadIcon,
 		gmDownloadAudio,
-		gmDownloadShownotes,
+        gmDownloadShownotes
 	};
-public:
+
     explicit podcastsDB(QObject *parent = 0);
     ~podcastsDB();
 
