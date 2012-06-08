@@ -27,22 +27,31 @@ QVariant FolderViewer::data ( const QModelIndex & index, int role )  const
 // 	{
 // 		qDebug() << i << " : " << headerData(i, Qt::Horizontal);
 // 	}
+    QVariant res (QString("Unimplemented yet!"));
     switch ( role )
     {
     case rl_title:
-        return QSqlQueryModel::data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
+        res = QSqlQueryModel::data(index.sibling(index.row(), 1), Qt::DisplayRole);
+        break;
     case rl_url :
-        return QSqlQueryModel::data(index.sibling(index.row(), 2), Qt::DisplayRole).toString();
-    case rl_newEpisodes:
-	case rl_downloaded:
+        res = QSqlQueryModel::data(index.sibling(index.row(), 2), Qt::DisplayRole);
+        break;
 	case rl_icon:
-        return QSqlQueryModel::data(index.sibling(index.row(), 3), Qt::DisplayRole).toString();
-	case rl_tag:
-        return QSqlQueryModel::data(index.sibling(index.row(), 4), Qt::DisplayRole).toString();
-	case rl_deleteInDays:
-        return QSqlQueryModel::data(index.sibling(index.row(), 5), Qt::DisplayRole).toString();
-	case rl_status:
-		return QSqlQueryModel::data(index.sibling(index.row(), 6), Qt::DisplayRole).toString();
+        res = QSqlQueryModel::data(index.sibling(index.row(), 3), Qt::DisplayRole);
+        break;
+    case rl_tag:
+        res = QSqlQueryModel::data(index.sibling(index.row(), 4), Qt::DisplayRole);
+        break;
+    case rl_deleteInDays:
+        res = QSqlQueryModel::data(index.sibling(index.row(), 5), Qt::DisplayRole);
+        break;
+    case rl_status:
+        res = QSqlQueryModel::data(index.sibling(index.row(), 6), Qt::DisplayRole);
+        break;
+    case rl_newEpisodes:
+    case rl_downloaded:
+        break;
     }
-    return QVariant(QString("Unimplemented yet!"));
+    qDebug() << "role: " << role << " : " << res.toString();
+    return res;
 }
