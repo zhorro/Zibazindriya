@@ -8,6 +8,11 @@ Item {
     property string description: ""
     property string url: ""
 
+    property string title: "untitled"
+    property string icon: "../Images/RSS.png"
+    property string tag: "All"
+    property int deleteInDays: -1
+
     width: 360
     height: 32
 
@@ -24,7 +29,7 @@ Item {
         }
 
         width: height
-        source: "../Images/RSS.png"
+        source: rssItem.icon
     }
 
     function positiveIntToString(a){

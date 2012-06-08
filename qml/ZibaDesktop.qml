@@ -9,10 +9,15 @@ Rectangle {
         anchors.fill: parent
         model: feedsModel
         delegate: RssItem {
-            newEpisodes: mdl_newEpisodes
-            downloaded: mdl_downloaded
-            description: mdl_description
-            url: mdl_url
+            newEpisodes:  mdl_newEpisodes // Количество новых эпизодов
+            downloaded:   mdl_downloaded // Скачаных (готовых к прослушиванию)
+            url:          mdl_url // Ссылка на ленту
+
+            title:        mdl_title // Заголовок
+            icon:         mdl_icon // Иконка
+            tag:          mdl_tag // Тэги
+            deleteInDays: mdl_deleteInDays // Время жизни
+
         }
     }
 }

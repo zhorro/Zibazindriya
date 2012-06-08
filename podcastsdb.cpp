@@ -38,12 +38,13 @@ QObject(parent)
 	QSqlQuery queryOfCreatingSources(dbase);
 	if (queryOfCreatingSources.exec (
 		"CREATE TABLE podcasts ("
-		"id                 INTEGER     PRIMARY KEY,"
-		"title              TEXT,"
-		"podcast            TEXT,"
-		"icon               TEXT,"
-		"tag				TEXT,"
-		"deleteInDays       INTEGER"
+		"id                 INTEGER     PRIMARY KEY," // 0
+		"title              TEXT,"					  // 1
+		"podcast            TEXT,"                    // 2
+		"icon               TEXT,"					  // 3
+		"tag				TEXT,"					  // 4
+		"deleteInDays       INTEGER,"				  // 5
+		"status				TEXT"			     	  // 6
 		")"))
 	{
 		recreated = true;
@@ -52,9 +53,9 @@ QObject(parent)
 	else
 		qDebug () << "TABLE podcasts not created: " << queryOfCreatingSources.lastError ();
 
-	//if (recreated)
-	OPMLImport("opml/defaultFeeds.opml", this);
-	scanAll();
+	if (recreated)
+		OPMLImport("opml/defaultFeeds.opml", this);
+	//scanAll();
 }
 
 podcastsDB::~podcastsDB()
@@ -144,6 +145,8 @@ void podcastsDB::get( QUrl url, getModes mode )
 			connect(reply, SIGNAL(finished( )), this, SLOT(replyFinishedScan( )));
 			break;
 		case gmDownloadIcon:
+// 			connect(reply, SIGNAL(finished( )), this, SLOT(replyFinishedScan( )));
+// 			break;
 		case gmDownloadAudio:
 		case gmDownloadShownotes:
 		default :
@@ -162,7 +165,9 @@ void podcastsDB::replyFinishedScan ( )
 			int podcastId = exists(reply->url());
 
 			rssParser rss(podcastId, reply->readAll(), this);
-			qDebug() << connect (&rss, SIGNAL(gotNewEpisode(int, Episode)), this, SLOT(gotNewEpisode (int, Episode)), Qt::DirectConnection);
+			connect (&rss, SIGNAL(gotNewEpisode(int, Episode)), this, SLOT(gotNewEpisode (int, Episode)), Qt::DirectConnection);
+			connect (&rss, SIGNAL(gotImage(int, QUrl)), this, SLOT(updateRssImage (int, QUrl)), Qt::DirectConnection);
+			connect (&rss, SIGNAL(gotTitle(int, QString)), this, SLOT(updateRssTitle(int, QString)), Qt::DirectConnection);
 			rss.go();
 		} 
 		else 
@@ -186,5 +191,26 @@ void podcastsDB::gotNewEpisode (int podcast, Episode item)
 
 void podcastsDB::updateRssItem (QUrl url)
 {
-    qDebug() << "gotcha!";
+    qDebug() << "Updating url:" << url.toString();
+	scan(url);
+}
+
+void podcastsDB::updateRssImage (int podcast, QUrl url)
+{
+    qDebug() << "Updating image from url:" << url.toString();
+}
+
+void podcastsDB::updateRssTitle (int podcast, QString title)
+{
+    qDebug() << "Updating podcast id" << podcast << " : title :" << title;
+	QSqlQuery query("UPDATE podcasts "
+		"SET title= ? "
+ 		"WHERE id = ? ");
+	query.addBindValue(title);
+	query.addBindValue(podcast);
+	query.exec();
+}
+
+void podcastsDB::saveFile ( QUrl, QFileInfo )
+{
 }

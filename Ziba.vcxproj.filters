@@ -35,6 +35,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="QML">
+      <UniqueIdentifier>{0616c889-b7d1-4498-a365-86fb9b9ccf0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,5 +113,19 @@
     <ClInclude Include="opmlimport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="qml\RssItem.qml">
+      <Filter>QML</Filter>
+    </None>
+    <None Include="qml\TestPageWithLists.qml">
+      <Filter>QML</Filter>
+    </None>
+    <None Include="qml\ZibaDesktop.qml">
+      <Filter>QML</Filter>
+    </None>
+    <None Include="qml\Zibazindriya.qml">
+      <Filter>QML</Filter>
+    </None>
   </ItemGroup>
 </Project>

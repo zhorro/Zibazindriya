@@ -28,7 +28,7 @@ void rssParser::extractTitle()
     {
         QString title = T.text();
         qDebug() << "got new title: " << title;
-		emit gotTitle(title);
+		emit gotTitle(podcast, title);
     }
     else
         errorParsingXML = true;
@@ -42,7 +42,7 @@ void rssParser::extractImage()
     {
         QUrl imageUrl = QUrl(T.text());
         qDebug() << "got new image Url: " << imageUrl;
-		emit gotImage(imageUrl);
+		emit gotImage(podcast, imageUrl);
     }
     else
         errorParsingXML = true;

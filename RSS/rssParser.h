@@ -23,9 +23,9 @@ public:
 	bool go();
 
 signals:
-	void gotImage(QUrl);
-	void gotTitle(QString);
-	void gotLink (QUrl);
+	void gotImage(int, QUrl);
+	void gotTitle(int, QString);
+//	void gotLink (int, QUrl);
 	void gotNewEpisode (int, Episode);
 
 private:

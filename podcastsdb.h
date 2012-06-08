@@ -37,7 +37,10 @@ public slots:
 	void replyFinishedScan ( );
 	void scanQueue ();
 	void cleanRelays();
-	void gotNewEpisode (int podcast, Episode item);
+	
+	void gotNewEpisode  (int podcast, Episode item);
+    void updateRssImage (int podcast, QUrl url);
+    void updateRssTitle (int podcast, QString title);
 
 public slots:
     void updateRssItem (QUrl url);
@@ -50,6 +53,8 @@ private:
 
 	void get ( QUrl url, getModes mode );
 	void post( QUrl url, getModes mode );
+
+	void saveFile ( QUrl, QFileInfo );
 };
 
 
