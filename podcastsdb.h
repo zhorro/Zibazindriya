@@ -37,8 +37,10 @@ public slots:
 	void replyFinishedScan ( );
 	void scanQueue ();
 	void cleanRelays();
-
 	void gotNewEpisode (int podcast, Episode item);
+
+public slots:
+    void updateRssItem (QUrl url);
 
 private:
     QSqlDatabase dbase;

@@ -14,11 +14,6 @@ FolderViewer::FolderViewer(QObject *parent) :
     setRoleNames(roles);
 }
 
-void FolderViewer::updateData()
-{
-    //
-}
-
 QVariant FolderViewer::data ( const QModelIndex & index, int role )  const
 {
     switch ( role )

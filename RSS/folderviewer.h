@@ -21,7 +21,7 @@ public:
 signals:
     
 public slots:
-    void updateData ();
+
 };
 
 #endif // FOLDERVIEWER_H

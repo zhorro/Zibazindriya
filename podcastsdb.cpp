@@ -184,3 +184,7 @@ void podcastsDB::gotNewEpisode (int podcast, Episode item)
 	//	"VALUES (?)");
 }
 
+void podcastsDB::updateRssItem (QUrl url)
+{
+    qDebug() << "gotcha!";
+}

@@ -35,7 +35,7 @@ Item {
     }
 
     function ifFirstEmptySecond(a,b) {
-        if (a == "")
+        if (a === "")
             return b;
         return a;
     }
@@ -118,6 +118,14 @@ Item {
             verticalAlignment: Text.AlignVCenter
 
             height: width/2;
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            rssItem.state = 'updating'
+            Ziba.updateRssItem(rssItem.url);
         }
     }
 
