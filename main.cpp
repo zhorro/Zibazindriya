@@ -19,10 +19,14 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 	QDeclarativeContext *ctxt = viewer.rootContext();
 	ctxt->setContextProperty("feedsModel", &foldModel);
 
-	
-	viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+#if 0
     viewer.setMainQmlFile(QLatin1String("qml/Zibazindriya.qml"));
-	viewer.showExpanded();
+#else
+    viewer.setMainQmlFile(QLatin1String("qml/ZibaDesktop.qml"));
+#endif
+    viewer.rootContext()->setContextProperty("Ziba", &pdb);
+    viewer.showExpanded();
 
     return app->exec();
 }

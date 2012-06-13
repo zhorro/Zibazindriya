@@ -11,8 +11,11 @@ public:
         rl_status = Qt::UserRole + 1,
         rl_downloaded,
         rl_newEpisodes,
-        rl_description,
         rl_url,
+		rl_title,
+		rl_icon,
+		rl_tag,
+		rl_deleteInDays,
     };
 
     explicit FolderViewer(QObject *parent = 0);
@@ -21,7 +24,7 @@ public:
 signals:
     
 public slots:
-    void updateData ();
+
 };
 
 #endif // FOLDERVIEWER_H
